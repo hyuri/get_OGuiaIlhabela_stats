@@ -4,8 +4,6 @@ import json
 
 import humanize
 
-import milestones
-
 #-----------------------------------------------------------------------------------------------------------------------
 # Utility
 
@@ -89,30 +87,12 @@ def save_stats(list_of_stats):
 		
 		f.write(json.dumps(channel_data, indent=4))
 
-def highlight_milestone(views=None, subscribers=None, milestone_type="channel"):
-	with open("previous_stats.json") as f:
-		channel_data = json.load(f)
-		
-		if views is not None:
-			for video in channel_data["videos"]:
-				for milestone in milestones.views_milestones:
-					if views >= milestone and videos["total_views"] < milestone:
-						return f"{{ {friendly_numbers(views)} }} (New Milestone)"
-
-		if subscribers is not None:
-			for video in channel_data["videos"]:
-				for milestone in milestones.subscribers_milestones:
-					if subscribers >= milestone and [] < milestone:
-						return f"{{ {friendly_numbers(subscribers)} }} (New Milestone)"
-
-		return None
-
-def print_channel_stats(channel_stats):
-	print(f"{channel_stats['channel']}:\n ~ {highlight_milestone(subscribers=channel_stats['subscribers_count'])} Subscribers\n ~ {highlight_milestone(views=channel_stats['total_views_count'])} Views")
+def print_channel_stats(channel):
+	print(f"{channel['channel']}:\n ~ {friendly_numbers(channel['subscribers_count'])} Subscribers\n ~ {friendly_numbers(channel['total_views_count'])} Views")
 	print("-"*50)
 
-def print_video_stats(video_stats):
-	print(f"{video_stats['title']}:\n ~ {friendly_numbers(video_stats['views_count'])} Views")
+def print_video_stats(video):
+	print(f"{video['title']}:\n ~ {friendly_numbers(video['views_count'])} Views")
 	print("-"*50)
 #-----------------------------------------------------------------------------------------------------------------------
 # Running
@@ -133,7 +113,5 @@ for video in sorted(videos, key=lambda video: video["views_count"], reverse=True
 
 	# Formatted Prints
 	print_video_stats(video)
-
-save_stats([o_guia_ilhabela] + videos)
 
 input("\nPress enter to exit.")
