@@ -63,30 +63,6 @@ def get_video_stats(url):
 		"url": url
 	}
 
-def save_stats(list_of_stats):
-	with open("previous_stats.json", "w") as f:
-		channel_data = {}
-		
-		videos = []
-
-		for i in list_of_stats:
-			if "channel" in i:
-				channel_data["channel"] = i["channel"]
-				channel_data["subscribers_count"] = i["subscribers_count"]
-				channel_data["total_views_count"] = i["total_views_count"]
-				channel_data["url"] = i["url"]
-
-			else:
-				videos.append({
-					"title": i["title"],
-					"views_count": i["views_count"],
-					"url": i["url"]
-				})
-
-		channel_data["videos"] = videos
-		
-		f.write(json.dumps(channel_data, indent=4))
-
 def print_channel_stats(channel):
 	print(f"{channel['channel']}:\n ~ {friendly_numbers(channel['subscribers_count'])} Subscribers\n ~ {friendly_numbers(channel['total_views_count'])} Views")
 	print("-"*50)
