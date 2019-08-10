@@ -73,6 +73,7 @@ def print_video_stats(video):
 #-----------------------------------------------------------------------------------------------------------------------
 # Running
 
+# Get channel and videos stats
 o_guia_ilhabela = get_channel_stats("https://www.youtube.com/OGuiaIlhabela")
 
 praia_do_curral = get_video_stats("https://www.youtube.com/watch?v=UI17HoheqmU")
@@ -81,13 +82,20 @@ ilha_das_cabras = get_video_stats("https://www.youtube.com/watch?v=-K5xfQ-R4yA")
 pico_do_baepi = get_video_stats("https://www.youtube.com/watch?v=o8kStoOhZ5M")
 
 videos = [praia_do_curral, praia_dos_castelhanos, ilha_das_cabras, pico_do_baepi]
-print_channel_stats(o_guia_ilhabela)
 
+# Print channel and videos stats
+print_channel_stats(o_guia_ilhabela)
 for video in sorted(videos, key=lambda video: video["views_count"], reverse=True):
 	# Removing "O Guia Ilhabela" from the videos' titles
 	video["title"] = video["title"].replace(" - O Guia Ilhabela", "")
 
 	# Formatted Prints
 	print_video_stats(video)
+
+# Update previous_stats.json
+with open("previous_stats.json", "w") as file:
+	o_guia_ilhabela["videos"] = [video for video in videos]
+	
+	file.write(json.dumps(dict(o_guia_ilhabela), indent=4))
 
 input("\nPress enter to exit.")
