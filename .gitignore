@@ -1,0 +1,7 @@
+previous_stats.json
+
+*.sublime-project
+*.sublime-workspace
+
+*.py[co]
+__pycache__/
